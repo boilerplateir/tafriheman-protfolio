@@ -1,8 +1,35 @@
-import express from 'express'
-const app = express()
+import express from 'express';
+import bodyParser from 'body-parser';
+import {
+  graphqlExpress,
+  graphiqlExpress
+} from 'graphql-server-express';
+import {
+  makeExecutableSchema
+} from 'graphql-tools';
 
-app.get('/', function (req, res) {
-  res.send('hello world')
-})
+import routes from './rest/routes';
+import typeDefs from './graphql/typeDefs';
+import resolvers from './graphql/resolvers';
 
-app.listen(3000, () => console.log('listening on port 3000'))
+const app = express();
+
+// Middlewares
+app.use(bodyParser.json());
+
+// Mount REST on /api
+app.use('/api', routes);
+
+// Mount GraphQL on /graphql
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers: resolvers()
+});
+app.use('/graphql', graphqlExpress({
+  schema
+}));
+app.use('/graphiql', graphiqlExpress({
+  endpointURL: '/graphql'
+}));
+
+app.listen(3000, () => console.log('Express app listening on localhost:3000'));
