@@ -34,19 +34,51 @@ function get(req, res) {
     return res.json(req.user);
 }
 
-/**
- * List projects of user
- * @returns {Projects[]}
- */
-function listProjects(req, res, next) {
-    req.user.getProjects()
-        .then(projects => res.json(projects))
-        .catch(e => next(e));
+function signin(req, res, next) {
+
+    var email = req.body.email;
+    var password = req.body.password;
+
+    req.checkBody('email', 'The email field is required').notEmpty();
+    req.checkBody('password', 'The password field is required').notEmpty();
+
+    var errors = req.validationErrors();
+    if (errors) {
+        res.status(400).json(errors);
+        return;
+    }
+    console.log("next");
+    next();
+}
+
+function signup(req, res) {
+    var name = req.body.name;
+    var email = req.body.email;
+    var password = req.body.password;
+    var password_confirmation = req.body.password_confirmation;
+
+    req.checkBody('name', 'The Name field is required').notEmpty();
+    req.checkBody('email', 'The email field is required').notEmpty();
+    req.checkBody('email', 'The email must be a valid email adress').isEmail();
+    req.checkBody('password', 'The password field is required').notEmpty();
+    req.checkBody('password_confirmation', 'The Confirm Password field is required').notEmpty();
+    req.checkBody('password_confirmation', 'Password do not match').equals(password);
+
+    var errors = req.validationErrors();
+    if (errors) {
+        res.status(400).json(errors);
+        return;
+    }
+
+    console.log('register code');
+    res.send('register');
+    return;
 }
 
 export default {
     load,
     get,
     list,
-    listProjects
+    signin,
+    signup
 };
