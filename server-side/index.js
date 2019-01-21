@@ -52,6 +52,7 @@ app.use(expressValidator({
     };
   }
 }));
+app.use(express.static('./../client-side/build'));
 
 // Mount REST on /api
 app.use('/api', routes);

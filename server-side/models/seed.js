@@ -3,13 +3,13 @@ export default function (sequelize) {
     models.User.create({
             firstname: 'abbas',
             lastname: 'ghoroone',
-            email: 'abbas.ghoroone@example.com',
-            password: null
+            email: 'admin@gmail.com',
+            password: "123456"
         })
         .then(() => models.User.create({
             firstname: 'ali',
             lastname: 'daei',
-            email: 'ali.daei@example.com',
-            password: null
+            email: 'super@gmail.com',
+            password: "123456"
         }));
 }

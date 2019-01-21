@@ -14,11 +14,14 @@ passport.serializeUser(function (user, done) {
 });
 
 passport.deserializeUser(function (id, done) {
-  User.findById(id).then((user) => {
-    done(err, user);
+  User.findOne({
+    where: {
+      id: id
+    }
+  }).then((user) => {
+    done(null, user);
   });
 });
-
 
 passport.use('local-login', new LocalStrategy({
     usernameField: 'email',
@@ -33,7 +36,7 @@ passport.use('local-login', new LocalStrategy({
       if (!user) {
         return done(null, false, {});
       }
-      if (user.password == password) {
+      if (user.password !== password) {
         return done(null, false, {});
       }
       return done(null, user);
@@ -46,11 +49,17 @@ router.route('/signin')
   .post(userController.signin, passport.authenticate('local-login', {
     failureRedirect: '/'
   }), function (req, res) {
-    res.send('login success');
+    res.json({
+      message: 'success'
+    });
   });
 
 router.route('/signup')
   /** post /api/auth/signup - signup */
   .post(userController.signup);
+
+router.route('/logout')
+  /** get /logout - logout */
+  .get(userController.logout);
 
 export default router;

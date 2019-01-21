@@ -35,44 +35,29 @@ function get(req, res) {
 }
 
 function signin(req, res, next) {
-
-    var email = req.body.email;
-    var password = req.body.password;
-
-    req.checkBody('email', 'The email field is required').notEmpty();
-    req.checkBody('password', 'The password field is required').notEmpty();
-
-    var errors = req.validationErrors();
-    if (errors) {
-        res.status(400).json(errors);
-        return;
-    }
-    console.log("next");
+    //check validations
     next();
 }
 
 function signup(req, res) {
-    var name = req.body.name;
-    var email = req.body.email;
-    var password = req.body.password;
-    var password_confirmation = req.body.password_confirmation;
-
-    req.checkBody('name', 'The Name field is required').notEmpty();
-    req.checkBody('email', 'The email field is required').notEmpty();
-    req.checkBody('email', 'The email must be a valid email adress').isEmail();
-    req.checkBody('password', 'The password field is required').notEmpty();
-    req.checkBody('password_confirmation', 'The Confirm Password field is required').notEmpty();
-    req.checkBody('password_confirmation', 'Password do not match').equals(password);
-
-    var errors = req.validationErrors();
-    if (errors) {
-        res.status(400).json(errors);
-        return;
-    }
-
-    console.log('register code');
-    res.send('register');
+    //check validations
+    User.create({
+        firstname: req.body.firstname,
+        lastname: req.body.lastname,
+        email: req.body.email,
+        password: req.body.password
+    })
+    res.json({
+        message: 'success'
+    });
     return;
+}
+
+function logout(req, res) {
+    req.logout();
+    res.json({
+        message: 'success'
+    });
 }
 
 export default {
@@ -80,5 +65,6 @@ export default {
     get,
     list,
     signin,
-    signup
+    signup,
+    logout
 };
