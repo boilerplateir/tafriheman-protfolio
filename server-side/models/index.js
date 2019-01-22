@@ -1,6 +1,7 @@
 import Sequelize from 'sequelize';
 
 import User from './user.model';
+import Product from './product.model';
 import seed from './seed'; // eslint-disable-line
 
 const sequelize = new Sequelize(null, null, null, {
@@ -10,6 +11,7 @@ const sequelize = new Sequelize(null, null, null, {
 });
 
 User(sequelize);
+Product(sequelize);
 
 sequelize.sync();
 // Uncomment the line if you want to rerun DB seed

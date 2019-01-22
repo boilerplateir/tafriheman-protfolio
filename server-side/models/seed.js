@@ -12,4 +12,14 @@ export default function (sequelize) {
             email: 'super@gmail.com',
             password: "123456"
         }));
+    models.Product.create({
+            title: 'pro 1',
+            desc: 'desc 1',
+            price: '110.02 $'
+        })
+        .then(() => models.Product.create({
+            title: 'pro 2',
+            desc: 'desc 2',
+            price: '130.92 $'
+        }));
 }

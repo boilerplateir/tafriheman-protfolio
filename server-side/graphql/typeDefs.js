@@ -7,6 +7,13 @@ type User {
   email: String
 }
 
+type Product {
+  id: ID!
+  title: String
+  desc: String
+  price: String
+}
+
 input UserInputSignup {
   firstname: String
   lastname: String
@@ -23,6 +30,8 @@ input UserInputSignin {
 type RootQuery {
   user(id: ID): User
   users: [User]
+  product(id: ID): Product
+  products: [Product]
 }
 
 # The schema allows the following mutations:
